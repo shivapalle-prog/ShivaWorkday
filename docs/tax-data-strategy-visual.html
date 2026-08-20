@@ -1,0 +1,427 @@
+<title>The Tax Answer Factory</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --ground:#FAFBF8;
+    --surface:#FFFFFF;
+    --surface-2:#F1F5F0;
+    --ink:#17241E;
+    --ink-soft:#41564C;
+    --ink-faint:#6E8177;
+    --line:#DCE5DE;
+    --line-strong:#C4D2C7;
+    --accent:#1E8A5B;
+    --accent-deep:#146043;
+    --accent-wash:#E7F3EC;
+    --warn:#C07C1E;
+    --warn-wash:#F8EFDD;
+    --shadow:0 1px 2px rgba(23,36,30,.05),0 8px 28px rgba(23,36,30,.06);
+    --radius:14px;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ground:#0E1512;
+      --surface:#151E1A;
+      --surface-2:#1B2721;
+      --ink:#EAF1EC;
+      --ink-soft:#B4C5BB;
+      --ink-faint:#82988C;
+      --line:#26332C;
+      --line-strong:#33443A;
+      --accent:#4FBF88;
+      --accent-deep:#7ad3a5;
+      --accent-wash:#16281F;
+      --warn:#E0A94E;
+      --warn-wash:#2C2415;
+      --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 34px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#0E1512;
+    --surface:#151E1A;
+    --surface-2:#1B2721;
+    --ink:#EAF1EC;
+    --ink-soft:#B4C5BB;
+    --ink-faint:#82988C;
+    --line:#26332C;
+    --line-strong:#33443A;
+    --accent:#4FBF88;
+    --accent-deep:#7ad3a5;
+    --accent-wash:#16281F;
+    --warn:#E0A94E;
+    --warn-wash:#2C2415;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 34px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--ground);color:var(--ink);
+    font-family:"Public Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    font-size:17px;line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px}
+  .col{max-width:680px}
+  h1,h2,h3{font-family:"Fraunces",Georgia,serif;text-wrap:balance;line-height:1.12;margin:0}
+  a{color:var(--accent-deep)}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--accent);
+  }
+
+  /* ---- hero ---- */
+  header{
+    padding:76px 0 40px;border-bottom:1px solid var(--line);
+    background:
+      radial-gradient(1100px 380px at 82% -8%,var(--accent-wash),transparent 62%);
+  }
+  header h1{font-size:clamp(38px,6.4vw,66px);font-weight:600;letter-spacing:-.01em}
+  header .lede{
+    font-size:clamp(18px,2.4vw,21px);color:var(--ink-soft);margin-top:22px;max-width:600px;
+  }
+  .tag{
+    display:inline-flex;align-items:center;gap:8px;margin-bottom:26px;
+    padding:6px 13px;border:1px solid var(--line-strong);border-radius:999px;
+    background:var(--surface);font-size:13px;color:var(--ink-soft);box-shadow:var(--shadow)
+  }
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex:none}
+
+  section{padding:56px 0}
+  section + section{border-top:1px solid var(--line)}
+  h2{font-size:clamp(26px,4vw,36px);font-weight:600;letter-spacing:-.01em}
+  .sub{color:var(--ink-soft);margin-top:14px}
+  .kicker{margin-bottom:18px}
+
+  /* ---- the big idea ---- */
+  .idea{
+    margin-top:30px;padding:28px 30px;border-radius:var(--radius);
+    background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);
+  }
+  .idea p{margin:0;font-size:19px}
+  .idea .big{font-family:"Fraunces",serif;font-size:22px;color:var(--ink);font-weight:500}
+
+  /* ---- assembly line diagram ---- */
+  .diagram{margin-top:34px;overflow-x:auto}
+  .diagram svg{display:block;min-width:640px;width:100%;height:auto}
+  .stage-key{
+    display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:22px;font-size:14px;color:var(--ink-soft)
+  }
+  .stage-key b{color:var(--ink);font-weight:600}
+
+  /* ---- cards ---- */
+  .grid{display:grid;gap:16px;margin-top:30px}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  @media(max-width:720px){.g2,.g3{grid-template-columns:1fr}}
+  .card{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px 22px;box-shadow:var(--shadow)
+  }
+  .card h3{font-size:19px;font-weight:600;margin-bottom:6px}
+  .card p{margin:0;color:var(--ink-soft);font-size:15.5px}
+  .card .icon{
+    width:38px;height:38px;border-radius:10px;display:grid;place-items:center;
+    background:var(--accent-wash);margin-bottom:14px;color:var(--accent-deep)
+  }
+  .card .icon svg{width:21px;height:21px}
+
+  /* ---- translation table ---- */
+  .tt{margin-top:28px;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+  .tt-row{display:grid;grid-template-columns:34% 66%;border-top:1px solid var(--line);background:var(--surface)}
+  .tt-row:first-child{border-top:0}
+  .tt-head{background:var(--surface-2);font-weight:600}
+  .tt-row > div{padding:14px 18px}
+  .tt-row .term{
+    font-family:"IBM Plex Mono",monospace;font-size:13.5px;color:var(--accent-deep);
+    border-right:1px solid var(--line);font-weight:500;background:var(--surface-2)
+  }
+  .tt-head .term{color:var(--ink);background:var(--surface-2)}
+  .tt-row .plain{color:var(--ink-soft);font-size:15px}
+  .tt-head .plain{color:var(--ink)}
+  @media(max-width:560px){
+    .tt-row{grid-template-columns:1fr}
+    .tt-row .term{border-right:0;border-bottom:1px dashed var(--line)}
+  }
+
+  /* ---- safeguards / promises ---- */
+  .promise{display:flex;gap:16px;align-items:flex-start;padding:18px 0;border-top:1px solid var(--line)}
+  .promise:first-of-type{border-top:0}
+  .promise .num{
+    flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
+    font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:14px;
+    background:var(--accent);color:#fff
+  }
+  :root[data-theme="dark"] .promise .num,
+  .promise .num{color:#08130D}
+  .promise h3{font-size:17px;font-weight:600;margin-bottom:3px}
+  .promise p{margin:0;color:var(--ink-soft);font-size:15px}
+
+  /* ---- warn callout ---- */
+  .callout{
+    margin-top:28px;display:flex;gap:14px;align-items:flex-start;
+    padding:18px 20px;border-radius:var(--radius);
+    background:var(--warn-wash);border:1px solid color-mix(in srgb,var(--warn) 40%,transparent)
+  }
+  .callout svg{flex:none;width:22px;height:22px;color:var(--warn);margin-top:2px}
+  .callout p{margin:0;font-size:15.5px;color:var(--ink)}
+  .callout b{color:var(--ink)}
+
+  /* ---- roadmap ---- */
+  .phases{display:grid;gap:14px;margin-top:28px}
+  .phase{
+    display:grid;grid-template-columns:120px 1fr;gap:20px;align-items:baseline;
+    padding:18px 20px;background:var(--surface);border:1px solid var(--line);
+    border-radius:var(--radius);border-left:3px solid var(--accent);box-shadow:var(--shadow)
+  }
+  .phase .when{font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--accent-deep);font-weight:600}
+  .phase h3{font-size:17px;font-weight:600;margin-bottom:4px}
+  .phase p{margin:0;color:var(--ink-soft);font-size:15px}
+  @media(max-width:560px){.phase{grid-template-columns:1fr;gap:6px}}
+
+  footer{padding:44px 0 64px;color:var(--ink-faint);font-size:13.5px;border-top:1px solid var(--line)}
+  footer .mono{font-size:12.5px}
+</style>
+
+<header>
+  <div class="wrap col">
+    <span class="tag"><span class="dot"></span> Data Strategy · explained in plain language</span>
+    <h1>The Tax Answer Factory</h1>
+    <p class="lede">Every sale needs one thing from us: the <em>right</em> amount of tax, for the
+    right place, at the right moment — and proof we got it right if anyone ever asks. This is how we
+    build the "factory" that produces that answer, over and over, without slipping up.</p>
+  </div>
+</header>
+
+<section>
+  <div class="wrap col">
+    <p class="eyebrow kicker">The one big idea</p>
+    <h2>Think of tax data like a factory that makes correct answers</h2>
+    <div class="idea">
+      <p class="big">Raw information goes in one end. A correct, provable tax answer comes out the
+      other. In between, everything is checked, dated, and recorded — so we can always show our work.</p>
+    </div>
+    <p class="sub">Tax is unusually unforgiving. Rates and rules change thousands of times a year,
+    there are more than <b>13,000</b> tax areas in the US alone, and a wrong answer can mean fines
+    years later. So the factory is designed around three promises: the answer is <b>right</b>, it's
+    <b>provable</b>, and it can be <b>re-created exactly</b> — even years from now.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="col">
+      <p class="eyebrow kicker">How the factory works</p>
+      <h2>The journey of a piece of data</h2>
+      <p class="sub">Information doesn't jump straight to "usable." It moves down an assembly line,
+      getting cleaner and more trustworthy at each stop — like ingredients becoming a finished dish.</p>
+    </div>
+
+    <div class="diagram" role="img" aria-label="A five-stage assembly line: raw information is delivered, cleaned and organized, made ready to use, put on the shelf for instant access, and finally used to give a tax answer.">
+      <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arw" markerWidth="9" markerHeight="9" refX="6" refY="4.5" orient="auto">
+            <path d="M0,0 L9,4.5 L0,9 Z" fill="var(--line-strong)"/>
+          </marker>
+        </defs>
+        <!-- connectors -->
+        <g stroke="var(--line-strong)" stroke-width="2" marker-end="url(#arw)" fill="none">
+          <line x1="128" y1="96" x2="150" y2="96"/>
+          <line x1="264" y1="96" x2="286" y2="96"/>
+          <line x1="400" y1="96" x2="422" y2="96"/>
+          <line x1="536" y1="96" x2="558" y2="96"/>
+        </g>
+        <!-- stage template -->
+        <!-- 1 -->
+        <g>
+          <rect x="8" y="48" width="120" height="96" rx="12" fill="var(--surface)" stroke="var(--line)"/>
+          <circle cx="34" cy="74" r="12" fill="var(--accent-wash)"/>
+          <text x="34" y="79" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" font-weight="600" fill="var(--accent-deep)">1</text>
+          <text x="20" y="108" font-family="Public Sans, sans-serif" font-size="13.5" font-weight="600" fill="var(--ink)">Delivered</text>
+          <text x="20" y="126" font-family="Public Sans, sans-serif" font-size="11" fill="var(--ink-faint)">raw, as received</text>
+        </g>
+        <!-- 2 -->
+        <g>
+          <rect x="150" y="48" width="114" height="96" rx="12" fill="var(--surface)" stroke="var(--line)"/>
+          <circle cx="176" cy="74" r="12" fill="var(--accent-wash)"/>
+          <text x="176" y="79" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" font-weight="600" fill="var(--accent-deep)">2</text>
+          <text x="162" y="108" font-family="Public Sans, sans-serif" font-size="13.5" font-weight="600" fill="var(--ink)">Cleaned</text>
+          <text x="162" y="126" font-family="Public Sans, sans-serif" font-size="11" fill="var(--ink-faint)">checked &amp; tidy</text>
+        </g>
+        <!-- 3 -->
+        <g>
+          <rect x="286" y="48" width="114" height="96" rx="12" fill="var(--surface)" stroke="var(--line)"/>
+          <circle cx="312" cy="74" r="12" fill="var(--accent-wash)"/>
+          <text x="312" y="79" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" font-weight="600" fill="var(--accent-deep)">3</text>
+          <text x="298" y="108" font-family="Public Sans, sans-serif" font-size="13.5" font-weight="600" fill="var(--ink)">Ready</text>
+          <text x="298" y="126" font-family="Public Sans, sans-serif" font-size="11" fill="var(--ink-faint)">shaped to use</text>
+        </g>
+        <!-- 4 -->
+        <g>
+          <rect x="422" y="48" width="114" height="96" rx="12" fill="var(--surface)" stroke="var(--line)"/>
+          <circle cx="448" cy="74" r="12" fill="var(--accent-wash)"/>
+          <text x="448" y="79" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" font-weight="600" fill="var(--accent-deep)">4</text>
+          <text x="434" y="108" font-family="Public Sans, sans-serif" font-size="13.5" font-weight="600" fill="var(--ink)">On the shelf</text>
+          <text x="434" y="126" font-family="Public Sans, sans-serif" font-size="11" fill="var(--ink-faint)">instant access</text>
+        </g>
+        <!-- 5 -->
+        <g>
+          <rect x="558" y="48" width="120" height="96" rx="12" fill="var(--accent)" stroke="var(--accent-deep)"/>
+          <circle cx="584" cy="74" r="12" fill="rgba(255,255,255,.25)"/>
+          <text x="584" y="79" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" font-weight="600" fill="#fff">5</text>
+          <text x="570" y="108" font-family="Public Sans, sans-serif" font-size="13.5" font-weight="700" fill="#fff">The answer</text>
+          <text x="570" y="126" font-family="Public Sans, sans-serif" font-size="11" fill="rgba(255,255,255,.85)">tax charged</text>
+        </g>
+        <!-- baseline label -->
+        <text x="343" y="182" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1" fill="var(--ink-faint)">EVERY STEP IS DATED, CHECKED, AND RECORDED</text>
+        <line x1="60" y1="196" x2="626" y2="196" stroke="var(--line)" stroke-width="1" stroke-dasharray="3 5"/>
+      </svg>
+    </div>
+
+    <div class="stage-key col">
+      <span><b>Delivered</b> — new rates, rules, and sales land exactly as they arrived (kept forever, untouched).</span>
+      <span><b>Cleaned</b> — duplicates removed, formats fixed, everything stamped with dates.</span>
+      <span><b>Ready</b> — organized into the shapes each team actually needs.</span>
+      <span><b>On the shelf</b> — the most-used facts kept somewhere lightning-fast for checkout.</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="col">
+      <p class="eyebrow kicker">What it's all for</p>
+      <h2>The jobs this data has to do</h2>
+      <p class="sub">Different teams ask the factory for different things — some need answers in the
+      blink of an eye, others once a month.</p>
+    </div>
+    <div class="grid g3">
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg></div>
+        <h3>Charge tax instantly</h3>
+        <p>At checkout, tell the customer the exact tax in under the blink of an eye.</p>
+      </div>
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
+        <h3>File the paperwork</h3>
+        <p>Add up what was collected and send the right forms to each tax office on time.</p>
+      </div>
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M21 12a9 9 0 1 1-6-8.5"/></svg></div>
+        <h3>Handle exemptions</h3>
+        <p>Track which customers don't pay tax (and their valid certificates) so we don't over-charge.</p>
+      </div>
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l3-4 3 3 5-7"/></svg></div>
+        <h3>Know where we owe</h3>
+        <p>Watch sales in each region so we register to collect tax the moment we're required to.</p>
+      </div>
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6a2 2 0 0 1 2-2h11l5 5v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M8 12h8M8 16h5"/></svg></div>
+        <h3>Survive an audit</h3>
+        <p>Re-create any past answer exactly, with a full paper trail of why it was right.</p>
+      </div>
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M2 12h20M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg></div>
+        <h3>Work across borders</h3>
+        <p>Handle VAT/GST and different rules country by country, not just US sales tax.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap col">
+    <p class="eyebrow kicker">Jargon, translated</p>
+    <h2>The technical words — in plain English</h2>
+    <p class="sub">If you ever see these terms in the detailed plan, here's what they actually mean.</p>
+    <div class="tt">
+      <div class="tt-row tt-head"><div class="term">The technical term</div><div class="plain">What it really means</div></div>
+      <div class="tt-row"><div class="term">Tax content</div><div class="plain">The rulebook — every tax rate and rule, which changes all the time.</div></div>
+      <div class="tt-row"><div class="term">Determination</div><div class="plain">The answer — how much tax to charge on this sale.</div></div>
+      <div class="tt-row"><div class="term">Bitemporal</div><div class="plain">A time machine — we remember what the rules <em>were</em> on any past date, not just today's rules.</div></div>
+      <div class="tt-row"><div class="term">Immutable ledger</div><div class="plain">A permanent record book written in pen, never pencil — entries are added, never erased.</div></div>
+      <div class="tt-row"><div class="term">Lineage / provenance</div><div class="plain">The receipts — a paper trail showing where every number came from.</div></div>
+      <div class="tt-row"><div class="term">Jurisdiction</div><div class="plain">A tax area — a country, state, county, city, or special district with its own rules.</div></div>
+      <div class="tt-row"><div class="term">Quality gate</div><div class="plain">An inspector — data can't pass until it clears the checks.</div></div>
+      <div class="tt-row"><div class="term">Data product</div><div class="plain">A well-kept dataset with a named owner, like a labeled shelf someone is responsible for.</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap col">
+    <p class="eyebrow kicker">The three promises</p>
+    <h2>What the factory guarantees</h2>
+    <div style="margin-top:24px">
+      <div class="promise">
+        <div class="num">1</div>
+        <div>
+          <h3>The answer is right</h3>
+          <p>Rules are updated <em>before</em> they take effect, and a set of test sales runs on every
+          update to catch mistakes — like a "70%" tax rate that should have been "7%".</p>
+        </div>
+      </div>
+      <div class="promise">
+        <div class="num">2</div>
+        <div>
+          <h3>The answer is provable</h3>
+          <p>Every tax charge keeps its receipts: what we knew, which rule we used, and when. If an
+          auditor asks "why this number?", we can show exactly why.</p>
+        </div>
+      </div>
+      <div class="promise">
+        <div class="num">3</div>
+        <div>
+          <h3>The answer can be re-created</h3>
+          <p>Years later, we can rewind the time machine and reproduce any past answer perfectly —
+          using the rules that were in force back then, not today's.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+      <p><b>Why we're this careful:</b> in most software a slow answer is the worst outcome. In tax,
+      a <em>wrong</em> answer is worse — it can surface as a fine years later. So when the factory is
+      ever unsure, it plays it safe and flags it, rather than quietly guessing.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap col">
+    <p class="eyebrow kicker">The plan over time</p>
+    <h2>How we build it, step by step</h2>
+    <p class="sub">We don't build everything at once. Each phase stands on the one before it.</p>
+    <div class="phases">
+      <div class="phase">
+        <span class="when">0–3 months</span>
+        <div><h3>Lay the foundation</h3><p>Set up the permanent record book, basic locks and labels, and the raw delivery area.</p></div>
+      </div>
+      <div class="phase">
+        <span class="when">3–6 months</span>
+        <div><h3>Get answers right</h3><p>Build the time-machine rulebook, the inspectors, and the fast "on the shelf" store.</p></div>
+      </div>
+      <div class="phase">
+        <span class="when">6–12 months</span>
+        <div><h3>Cover more ground</h3><p>Add filing, exemptions, precise location look-ups, reporting, and cross-border tax.</p></div>
+      </div>
+      <div class="phase">
+        <span class="when">12+ months</span>
+        <div><h3>Add smarts</h3><p>Use AI to sort products, read new rules faster, and spot errors — always with a human check.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap col">
+    <p>A plain-language companion to the full strategy.
+    <span class="mono">docs/tax-compliance-data-strategy.md</span> holds the detailed version.</p>
+    <p class="mono">Data Strategy for Tax Compliance · Draft v1.0 · 2026-08-20</p>
+  </div>
+</footer>
