@@ -1,0 +1,261 @@
+<title>Workday–Avalara ELR Building Blocks</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: two platform zones (Workday left, Avalara right) joined by a central integration channel; stacks vertically on phones. */
+:root {
+  --bg: #f5f6f7;
+  --surface: #ffffff;
+  --ink: #072839;
+  --ink-2: #4f5256;
+  --line: #dee2e4;
+  --wd: #066183;          /* Workday Core */
+  --wd-soft: #f2fafd;
+  --ext: #7342a1;         /* Workday Extend */
+  --ext-soft: #fbf8fe;
+  --ava: #e05200;         /* Avalara */
+  --ava-soft: #fff4ed;
+  --chip: #f5f6f7;
+  --ok: #42701b;
+  --ok-soft: #f5fbef;
+  --font-sans: "Source Sans 3", "Source Sans Pro", -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #071a24; --surface: #0d2533; --ink: #eef2f4; --ink-2: #acb7bd; --line: #24414f;
+    --wd: #59c3ec; --wd-soft: #0b2c3b; --ext: #c99bfb; --ext-soft: #1f1a33;
+    --ava: #ff8a3d; --ava-soft: #2e1d12; --chip: #12303f; --ok: #9fd96a; --ok-soft: #16301a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #071a24; --surface: #0d2533; --ink: #eef2f4; --ink-2: #acb7bd; --line: #24414f;
+  --wd: #59c3ec; --wd-soft: #0b2c3b; --ext: #c99bfb; --ext-soft: #1f1a33;
+  --ava: #ff8a3d; --ava-soft: #2e1d12; --chip: #12303f; --ok: #9fd96a; --ok-soft: #16301a;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-sans); font-size: 15px; line-height: 1.45;
+  padding-block: 32px 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1320px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+header { display: flex; flex-direction: column; gap: 6px; }
+.eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ava); }
+h1 { margin: 0; font-size: clamp(24px, 3vw, 32px); font-weight: 700; text-wrap: balance; }
+.sub { margin: 0; color: var(--ink-2); max-width: 70ch; }
+
+.diagram { display: grid; grid-template-columns: minmax(0, 2fr) 190px minmax(0, 1fr); gap: 0; align-items: stretch; }
+
+.platform { border: 1.5px solid var(--line); border-radius: 12px; background: var(--surface); display: flex; flex-direction: column; min-width: 0; }
+.platform > .ph { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 14px 18px; border-bottom: 1.5px solid var(--line); }
+.ph h2 { margin: 0; font-size: 18px; font-weight: 700; }
+.ph .tag { font-family: var(--font-mono); font-size: 11px; color: var(--ink-2); }
+.platform.workday { border-color: color-mix(in srgb, var(--wd) 35%, var(--line)); }
+.platform.avalara { border-color: color-mix(in srgb, var(--ava) 40%, var(--line)); }
+.platform.workday .ph h2 { color: var(--wd); }
+.platform.avalara .ph h2 { color: var(--ava); }
+.pbody { padding: 16px; display: flex; flex-direction: column; gap: 16px; flex: 1; }
+
+.framework { border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+.framework.core { background: var(--wd-soft); --c: var(--wd); }
+.framework.extend { background: var(--ext-soft); --c: var(--ext); }
+.framework.elr { background: var(--ava-soft); --c: var(--ava); flex: 1; }
+.fw-title { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--c); }
+.fw-title::before { content: ""; width: 10px; height: 10px; border-radius: 2px; background: var(--c); }
+
+.blocks { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.framework.elr .blocks { grid-template-columns: minmax(0, 1fr); }
+.block { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.block h3 { margin: 0; font-size: 15px; font-weight: 700; color: var(--ink); }
+.block p { margin: 0; font-size: 13.5px; color: var(--ink-2); }
+.chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.chip { font-size: 12px; padding: 2px 7px; border-radius: 4px; background: var(--chip); border: 1px solid var(--line); color: var(--ink); white-space: nowrap; }
+.chip.code { font-family: var(--font-mono); font-size: 11px; color: var(--c); border-color: color-mix(in srgb, var(--c) 30%, var(--line)); }
+.badge.migrate { background: var(--ext-soft); color: var(--ext); border-color: color-mix(in srgb, var(--ext) 35%, transparent); border-radius: 8px; }
+.framework.extend .badge.migrate { background: var(--surface); }
+.badge.action { background: var(--surface); color: var(--ava); border: 1px dashed color-mix(in srgb, var(--ava) 55%, transparent); border-radius: 8px; }
+.chip.wrap { white-space: normal; overflow-wrap: anywhere; }
+.chip-label { font-size: 11px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-2); width: 100%; margin-top: 2px; }
+.badge { margin-top: auto; align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: 999px; background: var(--ok-soft); color: var(--ok); border: 1px solid color-mix(in srgb, var(--ok) 35%, transparent); }
+
+/* Integration channel */
+.channel { display: flex; flex-direction: column; justify-content: center; gap: 14px; padding: 16px 10px; position: relative; }
+.channel-title { text-align: center; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.flow { display: flex; flex-direction: column; gap: 4px; }
+.flow .name { font-size: 13px; font-weight: 600; text-align: center; }
+.flow .what { font-size: 11.5px; color: var(--ink-2); text-align: center; }
+.arrow { position: relative; height: 12px; }
+.arrow::before { content: ""; position: absolute; left: 6px; right: 6px; top: 5px; height: 2px; background: var(--c); }
+.arrow::after { content: ""; position: absolute; top: 1px; border: 5px solid transparent; }
+.arrow.right::after { right: -2px; border-left: 8px solid var(--c); }
+.arrow.left::after { left: -2px; border-right: 8px solid var(--c); }
+.arrow.both::after { right: -2px; border-left: 8px solid var(--c); }
+.arrow.both { --c: var(--ink-2); }
+.arrow.both::before { background: repeating-linear-gradient(90deg, var(--c) 0 5px, transparent 5px 9px); }
+.flow.out { --c: var(--wd); }
+.flow.in { --c: var(--ava); }
+.auth { border-top: 1px dashed var(--line); padding-top: 12px; }
+
+.legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 13px; color: var(--ink-2); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+
+@media (max-width: 1100px) {
+  .blocks { grid-template-columns: minmax(0, 1fr); }
+  .diagram { grid-template-columns: minmax(0, 1.4fr) 170px minmax(0, 1fr); }
+}
+@media (max-width: 760px) {
+  .diagram { grid-template-columns: minmax(0, 1fr); }
+  .channel { flex-direction: row; flex-wrap: wrap; justify-content: center; padding: 18px 0; }
+  .channel-title { width: 100%; }
+  .flow { flex: 1 1 140px; }
+  .arrow { transform: rotate(90deg); width: 40px; height: 12px; margin: 10px auto; }
+  .auth { border-top: none; padding-top: 0; }
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Solution architecture</div>
+    <h1>Architectural Building Blocks</h1>
+    <p class="sub">How the Workday tenant (core platform plus the Extend app) connects to the Avalara ELR Cloud Platform for global e-invoicing and e-reporting.</p>
+  </header>
+
+  <div class="diagram">
+    <!-- Workday Platform -->
+    <section class="platform workday" aria-label="Workday Platform">
+      <div class="ph"><h2>Workday Platform</h2><span class="tag">customer tenant</span></div>
+      <div class="pbody">
+        <div class="framework core">
+          <div class="fw-title">Workday Core &amp; Integration Framework</div>
+          <div class="blocks">
+            <article class="block">
+              <h3>Core Financial Data</h3>
+              <p>Standard Workday business objects.</p>
+              <div class="chips">
+                <span class="chip">Customer Invoices</span><span class="chip">Supplier Invoices</span><span class="chip">Payments</span><span class="chip">Tax Configurations</span><span class="chip">Company Hierarchies</span><span class="chip">Customers</span><span class="chip">Suppliers</span>
+              </div>
+              <span class="badge">✓ 100% preserved during migration</span>
+            </article>
+            <article class="block">
+              <h3>Business Process Framework</h3>
+              <p>Event triggers and BP orchestration steps.</p>
+              <div class="chips">
+                <span class="chip code wrap">Customer Invoice Event for Company Hierarchy</span>
+                <span class="chip code wrap">Supplier Invoice Event for Company Hierarchy</span>
+              </div>
+              <span class="badge">✓ 100% preserved during migration</span>
+            </article>
+            <article class="block">
+              <h3>Integration &amp; Security Layer</h3>
+              <div class="chips">
+                <span class="chip-label">Integration Systems</span>
+                <span class="chip">AP/AR Document Sync</span><span class="chip">Status Sync</span><span class="chip">E-Reporting</span>
+                <span class="chip-label">ISU &amp; Security Group</span>
+                <span class="chip code">Avalara_ISU_ELR</span><span class="chip code">Avalara_ELR_SG</span>
+                <span class="chip-label">Credential Stores</span>
+                <span class="chip code">AvalaraCredsSBX</span><span class="chip code">AvalaraCredsProd</span>
+              </div>
+              <span class="badge">✓ 100% preserved during migration</span>
+            </article>
+          </div>
+        </div>
+
+        <div class="framework extend">
+          <div class="fw-title">Workday Extend Framework</div>
+          <div class="blocks">
+            <article class="block">
+              <h3>Custom Business Objects</h3>
+              <p>Secure tenant-side storage.</p>
+              <div class="chips">
+                <span class="chip">Company Mappings</span><span class="chip">Workday Data Source Fields</span><span class="chip">ELR Data Source Schemas</span><span class="chip">Custom WQL Field Queries</span><span class="chip">Metadata Mappings</span><span class="chip">Application Configurations</span>
+              </div>
+              <span class="badge migrate">↻ Setup and transaction history migrated from EU app to Global app</span>
+            </article>
+            <article class="block">
+              <h3>Document History &amp; Audit Trail</h3>
+              <p>Tracks the invoice transmission lifecycle, error logs and response statuses.</p>
+              <div class="chips">
+                <span class="chip code">Document Statuses</span><span class="chip code">Application Response Statuses</span><span class="chip code">E-Reporting Statuses</span>
+              </div>
+              <span class="badge migrate">↻ Setup and transaction history migrated from EU app to Global app</span>
+            </article>
+            <article class="block">
+              <h3>Security Domains &amp; Developer Portal</h3>
+              <p>App security domains and OAuth API Client credential mappings.</p>
+              <div class="chips">
+                <span class="chip code">Avalara ELR</span><span class="chip code">Avalara ELR User Domain</span><span class="chip">OAuth API Client</span>
+              </div>
+              <span class="badge action">+ New domains and developer access must be added</span>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Integration channel -->
+    <div class="channel" aria-label="Integration flows">
+      <div class="channel-title">Integration flows</div>
+      <div class="flow out">
+        <div class="name">AP/AR Document Sync</div>
+        <div class="arrow right" aria-hidden="true"></div>
+        <div class="what">Invoices out for validation &amp; clearance</div>
+      </div>
+      <div class="flow out">
+        <div class="name">E-Reporting</div>
+        <div class="arrow right" aria-hidden="true"></div>
+        <div class="what">Transaction reports to tax authorities</div>
+      </div>
+      <div class="flow in">
+        <div class="name">Status Sync</div>
+        <div class="arrow left" aria-hidden="true"></div>
+        <div class="what">Document &amp; response statuses back into Extend</div>
+      </div>
+      <div class="flow auth">
+        <div class="name">OAuth client credentials</div>
+        <div class="arrow both" aria-hidden="true"></div>
+        <div class="what">Sandbox / Production credential stores</div>
+      </div>
+    </div>
+
+    <!-- Avalara -->
+    <section class="platform avalara" aria-label="Avalara ELR Cloud Platform">
+      <div class="ph"><h2>Avalara ELR Cloud</h2><span class="tag">Avalara side</span></div>
+      <div class="pbody">
+        <div class="framework elr">
+          <div class="fw-title">ELR Cloud Platform</div>
+          <div class="blocks">
+            <article class="block">
+              <h3>ELR Compliance Engine</h3>
+              <p>Global e-invoicing validation, digital signatures and tax authority clearance.</p>
+              <div class="chips"><span class="chip">Validation</span><span class="chip">Digital signatures</span><span class="chip">Clearance protocols</span><span class="chip">PEPPOL</span><span class="chip">EDI</span></div>
+              <span class="badge">✓ 100% preserved during migration</span>
+            </article>
+            <article class="block">
+              <h3>ELR Configurations</h3>
+              <p>Tenant routing profiles, company tax registrations and authentication credentials.</p>
+              <span class="badge">✓ 100% preserved during migration</span>
+            </article>
+            <article class="block">
+              <h3>Workday-ELR Schema Mappings</h3>
+              <p>Global canonical-to-country format transformations.</p>
+              <div class="chips"><span class="chip code">UBL</span><span class="chip code">CII</span><span class="chip code">Factur-X</span><span class="chip code">FatturaPA</span><span class="chip code">KSeF</span><span class="chip">+ more</span></div>
+              <span class="badge">✓ 100% preserved during migration</span>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="legend" aria-label="Legend">
+    <span><i style="background: var(--wd)"></i>Workday Core &amp; Integration</span>
+    <span><i style="background: var(--ext)"></i>Workday Extend</span>
+    <span><i style="background: var(--ava)"></i>Avalara ELR Cloud</span>
+    <span><span class="chip code" style="--c: var(--ink)">monospace</span>named tenant objects</span>
+  </div>
+</div>
